@@ -72,8 +72,8 @@ Ejemplo de objeto Json:
 {"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}
 
 El servicio se encuentra disponible en la siguiente ruta:
-Local: http://localhost:8080/mutant/
-Cloud: https://egutierrez-meli.uc.r.appspot.com/mutant/
+*Local: http://localhost:8080/mutant/
+*Cloud: https://egutierrez-meli.uc.r.appspot.com/mutant/
 
 ### Servicio /stats
 
@@ -82,7 +82,7 @@ Servicio HTTP GET que retorna un Json con las estadísticas de las verificacione
 ![image](https://user-images.githubusercontent.com/8041581/167479068-628149fe-32e2-4030-801d-4b918530add0.png)
 
 El servicio se encuentra disponible en la siguiente ruta:
-Local: http://localhost:8080/stats
-Cloud: https://egutierrez-meli.uc.r.appspot.com/stats
+*Local: http://localhost:8080/stats
+*Cloud: https://egutierrez-meli.uc.r.appspot.com/stats
 
 

@@ -37,7 +37,7 @@ public class MutantRest {
 	}
 	
 	@GetMapping("/stats")
-	public ResponseEntity<Stats> getStats(@RequestBody DnaDTO dna) {
+	public ResponseEntity<Stats> getStats() {
 		Long countMutant = dnaService.getMutantDnaCount();
 		Long countHuman = dnaService.getHumanDnaCount();
 		double radio = countMutant * 1.0 / countHuman;

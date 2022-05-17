@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MutantRest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">meli</a> &gt; <a href="index.source.html" class="el_package">com.examen.mercadolibre.rest</a> &gt; <span class="el_source">MutantRest.java</span></div><h1>MutantRest.java</h1><pre class="source lang-java linenums">package com.examen.mercadolibre.rest;
+
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.examen.mercadolibre.DTO.DnaDTO;
+import com.examen.mercadolibre.model.Dna;
+import com.examen.mercadolibre.model.Stats;
+import com.examen.mercadolibre.repository.DnaRepository;
+import com.examen.mercadolibre.service.MutantService;
+
+@RestController
+@RequestMapping(&quot;&quot;)
+public class MutantRest {
+	
+<span class="fc" id="L24">	@Autowired</span>
+	MutantService mutantService = new MutantService();
+
+	
+	@Autowired 
+	DnaRepository dnaRepository;
+	
+<span class="fc" id="L31">	public MutantRest(DnaRepository dnaRepository) {</span>
+<span class="fc" id="L32">		this.dnaRepository = dnaRepository;</span>
+<span class="fc" id="L33">	}</span>
+
+	@PostMapping(&quot;/mutant/&quot;)
+	public ResponseEntity&lt;String&gt; getMutant(@RequestBody DnaDTO dna) throws IOException{
+		try {
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">			if (mutantService.isMutant(dna)) {</span>
+<span class="fc" id="L40">				dnaRepository.save(new Dna(dna.getDna().toString(), true));</span>
+<span class="fc" id="L41">				return new ResponseEntity&lt;String&gt;(HttpStatus.OK);</span>
+			}else {
+<span class="fc" id="L43">				dnaRepository.save(new Dna(dna.getDna().toString(), false));	</span>
+<span class="fc" id="L44">				return new ResponseEntity&lt;String&gt;(HttpStatus.FORBIDDEN);</span>
+			}
+				
+<span class="fc" id="L47">		}catch (Exception e){</span>
+<span class="fc" id="L48">			return new ResponseEntity&lt;String&gt;(e.getMessage(), HttpStatus.BAD_REQUEST);</span>
+		}
+	}
+	
+	@GetMapping(&quot;/stats&quot;)
+	public ResponseEntity&lt;Stats&gt; getStats(){
+		try { 
+<span class="fc" id="L55">			Long countMutant = dnaRepository.countByDnaMutant(true);</span>
+<span class="fc" id="L56">			Long countHuman = dnaRepository.countByDnaMutant(false);</span>
+<span class="fc" id="L57">			double ratio = countMutant * 1.0 / countHuman;</span>
+<span class="fc" id="L58">			Stats stats = new Stats(countMutant, countHuman, ratio);</span>
+<span class="fc" id="L59">			return new ResponseEntity&lt;Stats&gt;(stats, HttpStatus.OK);</span>
+<span class="nc" id="L60">		}catch (Exception e) {</span>
+<span class="nc" id="L61">			return new ResponseEntity&lt;Stats&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

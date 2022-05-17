@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MutantService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">meli</a> &gt; <a href="index.source.html" class="el_package">com.examen.mercadolibre.service</a> &gt; <span class="el_source">MutantService.java</span></div><h1>MutantService.java</h1><pre class="source lang-java linenums">package com.examen.mercadolibre.service;
+
+import org.springframework.stereotype.Service;
+
+import com.examen.mercadolibre.DTO.DnaDTO;
+
+@Service
+<span class="fc" id="L8">public class MutantService {</span>
+
+<span class="fc" id="L10">	static char[] basesNitrogenadas = {'A', 'T', 'C', 'G'};</span>
+
+	static int size;
+	//indica cuantas veces seguidas se debe encontrar la base nitrogendada
+<span class="fc" id="L14">	static final Integer cantidad = 4;</span>
+	 
+    // Indican las direcciones
+	// Derecha, abajo, derecha-abajo, izquierda-abajo
+<span class="fc" id="L18">    static Integer[] x = { 1, 0, 1, -1};</span>
+<span class="fc" id="L19">    static Integer[] y = { 0, 1, 1, 1};</span>
+ 
+    // Funcion que busca en las 4 direcciones
+    // Desde el nucleotido que se encuentre en la posición [row][col]
+    static boolean buscaSecuencia(String[] dna, Integer row, Integer col, char base)
+    {
+        //Se busca el caracter en todas las direcciones
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (Integer dir = 0; dir &lt; x.length ; dir++) {</span>
+            //Se inicializa la posicion para la direccion actual
+<span class="fc" id="L28">        	Integer cont, rowDir = row + x[dir], colDir = col + y[dir];</span>
+            
+            //El primer caracter ya ha sido validado
+            //Se inicia el contador en 1 y se revisan los demas caracteres
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            for (cont = 1; cont &lt; cantidad; cont++) {</span>
+                // Se valida que la siguiente posicion no este fuera de rango
+<span class="pc bpc" id="L34" title="2 of 8 branches missed.">                if (rowDir &gt;= size || rowDir &lt; 0 || colDir &gt;= size || colDir &lt; 0)</span>
+<span class="nc" id="L35">                    break;</span>
+ 
+                // Validar si el caracter corresponde con la secuencia esperada
+<span class="fc bfc" id="L38" title="All 2 branches covered.">                if (dna[rowDir].charAt(colDir) != base)</span>
+<span class="fc" id="L39">                    break;</span>
+ 
+                // Modificar los indices segun la direccion para el siguiente caracter a validar
+<span class="fc" id="L42">                rowDir += x[dir];</span>
+<span class="fc" id="L43">                colDir += y[dir];</span>
+            }
+ 
+            // Si el la secuencia de nucleotidos fue encontrada
+            // Entonces el contador tendra como valor 4 
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            if (cont == cantidad)</span>
+<span class="fc" id="L49">                return true;</span>
+        }
+<span class="fc" id="L51">        return false;</span>
+    }
+ 
+    //Busca una secuencia dada en una matriz de genes
+    public boolean recorreDNA(String[] dna, char base) throws Exception
+    {
+        // Se recorre la matriz
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    	for (Integer row = 0; row &lt; size; row++) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">    		if(dna[row].length() != size) {</span>
+<span class="fc" id="L60">    			throw new Exception(&quot;La Matriz de DNA no es de NxN&quot;);</span>
+    		}
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            for (Integer col = 0; col &lt; size; col++) {</span>
+<span class="fc bfc" id="L63" title="All 4 branches covered.">                if (dna[row].charAt(col) == base  &amp;&amp; buscaSecuencia(dna, row, col, base)) {</span>
+<span class="fc" id="L64">                	 return true;</span>
+                }
+            }
+        }
+<span class="fc" id="L68">    	return false;</span>
+    }
+ 
+    public boolean isMutant(DnaDTO adn) throws Exception
+    {
+<span class="fc" id="L73">		validateDna(adn);</span>
+<span class="fc" id="L74">        size = adn.dna.length;</span>
+<span class="fc" id="L75">        Integer contGenes = 0;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (char base : basesNitrogenadas) {</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        	if(recorreDNA(adn.dna, base)) {</span>
+<span class="fc" id="L78">        		contGenes++;</span>
+        	}
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        	if(contGenes &gt; 1) {</span>
+<span class="fc" id="L81">        		return true;</span>
+        	}
+        }
+<span class="fc" id="L84">        return false;</span>
+    }
+    
+    public void validateDna(DnaDTO dna) throws Exception{
+<span class="pc bpc" id="L88" title="1 of 6 branches missed.">    	if(dna == null || dna.getDna() == null || dna.getDna().length == 0) {</span>
+<span class="fc" id="L89">    		throw new Exception(&quot;Ingrese DNA&quot;);</span>
+    	}
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    	for (Integer row = 0; row &lt; size; row++) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            for (Integer col = 0; col &lt; size; col++) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">                if (!isBase(dna.getDna()[row].charAt(col))) {</span>
+<span class="fc" id="L94">                	throw new Exception(&quot;El DNA ingresado contiene moleculas que no corresponden a bases nitrogenadas&quot;);</span>
+                }
+            }
+        }
+<span class="fc" id="L98">    }    </span>
+    
+    public boolean isBase(char base){
+<span class="fc bfc" id="L101" title="All 2 branches covered.">    	for(char nucl : basesNitrogenadas) {</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">    		if(base == nucl) {</span>
+<span class="fc" id="L103">    			return true;</span>
+    		}
+    	}
+<span class="fc" id="L106">    	return false;</span>
+    }
+    
+  
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

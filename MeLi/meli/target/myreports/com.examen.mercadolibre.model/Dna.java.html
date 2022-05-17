@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Dna.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">meli</a> &gt; <a href="index.source.html" class="el_package">com.examen.mercadolibre.model</a> &gt; <span class="el_source">Dna.java</span></div><h1>Dna.java</h1><pre class="source lang-java linenums">package com.examen.mercadolibre.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Dna {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer dnaId;
+	
+	@Column
+    private String dnaGenes;
+	
+	@Column
+    private Boolean dnaMutant;
+
+	
+	public Dna() {
+<span class="nc" id="L24">		super();</span>
+<span class="nc" id="L25">	}</span>
+
+	public Dna(String dnaGenes, Boolean dnaMutant) {
+<span class="fc" id="L28">		super();</span>
+<span class="fc" id="L29">		this.dnaGenes = dnaGenes;</span>
+<span class="fc" id="L30">		this.dnaMutant = dnaMutant;</span>
+<span class="fc" id="L31">	}</span>
+
+	public Integer getDnaId() {
+<span class="nc" id="L34">		return dnaId;</span>
+	}
+
+	public void setDnaId(Integer dnaId) {
+<span class="nc" id="L38">		this.dnaId = dnaId;</span>
+<span class="nc" id="L39">	}</span>
+
+	public String getDnaGenes() {
+<span class="nc" id="L42">		return dnaGenes;</span>
+	}
+
+	public void setDnaGenes(String dnaGenes) {
+<span class="nc" id="L46">		this.dnaGenes = dnaGenes;</span>
+<span class="nc" id="L47">	}</span>
+
+	public Boolean getDnaMutant() {
+<span class="nc" id="L50">		return dnaMutant;</span>
+	}
+
+	public void setDnaMutant(Boolean dnaMutant) {
+<span class="nc" id="L54">		this.dnaMutant = dnaMutant;</span>
+<span class="nc" id="L55">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

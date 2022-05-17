@@ -7,6 +7,10 @@ public class Stats {
 	public double ratio;
 	
 	
+	public Stats() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Stats(Long count_mutant_dna, Long count_human_dna, double ratio) {
 		super();
 		this.count_mutant_dna = count_mutant_dna;

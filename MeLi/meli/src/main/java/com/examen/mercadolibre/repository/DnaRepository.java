@@ -6,4 +6,5 @@ import com.examen.mercadolibre.model.Dna;
 
 public interface DnaRepository extends JpaRepository<Dna, Integer>{
 	long countByDnaMutant(Boolean dnaMutant);
+	
 }

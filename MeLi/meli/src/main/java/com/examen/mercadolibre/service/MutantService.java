@@ -2,13 +2,12 @@ package com.examen.mercadolibre.service;
 
 import org.springframework.stereotype.Service;
 
-import com.examen.mercadolibre.model.Dna;
+import com.examen.mercadolibre.DTO.DnaDTO;
 
 @Service
 public class MutantService {
-	DnaService dnaService;
-	
-	public char[] basesNitrogenadas = {'A', 'T', 'C', 'G'};
+
+	static char[] basesNitrogenadas = {'A', 'T', 'C', 'G'};
 
 	static int size;
 	//indica cuantas veces seguidas se debe encontrar la base nitrogendada
@@ -53,10 +52,13 @@ public class MutantService {
     }
  
     //Busca una secuencia dada en una matriz de genes
-    static boolean recorreDNA(String[] dna, char base)
+    public boolean recorreDNA(String[] dna, char base) throws Exception
     {
         // Se recorre la matriz
     	for (Integer row = 0; row < size; row++) {
+    		if(dna[row].length() != size) {
+    			throw new Exception("La Matriz de DNA no es de NxN");
+    		}
             for (Integer col = 0; col < size; col++) {
                 if (dna[row].charAt(col) == base  && buscaSecuencia(dna, row, col, base)) {
                 	 return true;
@@ -66,12 +68,13 @@ public class MutantService {
     	return false;
     }
  
-    public boolean isMutant(String[] dna)
+    public boolean isMutant(DnaDTO adn) throws Exception
     {
-        size = dna.length;
+		validateDna(adn);
+        size = adn.dna.length;
         Integer contGenes = 0;
         for (char base : basesNitrogenadas) {
-        	if(recorreDNA(dna, base)) {
+        	if(recorreDNA(adn.dna, base)) {
         		contGenes++;
         	}
         	if(contGenes > 1) {
@@ -80,4 +83,28 @@ public class MutantService {
         }
         return false;
     }
+    
+    public void validateDna(DnaDTO dna) throws Exception{
+    	if(dna == null || dna.getDna() == null || dna.getDna().length == 0) {
+    		throw new Exception("Ingrese DNA");
+    	}
+    	for (Integer row = 0; row < size; row++) {
+            for (Integer col = 0; col < size; col++) {
+                if (!isBase(dna.getDna()[row].charAt(col))) {
+                	throw new Exception("El DNA ingresado contiene moleculas que no corresponden a bases nitrogenadas");
+                }
+            }
+        }
+    }    
+    
+    public boolean isBase(char base){
+    	for(char nucl : basesNitrogenadas) {
+    		if(base == nucl) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+  
 }

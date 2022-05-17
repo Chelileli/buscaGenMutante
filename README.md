@@ -16,8 +16,17 @@ String[] dna = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
 
 - JDK 11
 - Spring tool suite 4 
-- Google App Engine
 - MySql
+
+
+### Test unitarios y Jacoco coverage report
+Ejecutar el siguiente comando en el repositorio raiz:
+```bash
+mvn clean test
+```
+Jacoco coverage report se encuentra en la ruta: `/target/myreports/index.html`
+
+![jacocoIndex](https://user-images.githubusercontent.com/8041581/168740263-b8aad6c9-7e44-41b7-b429-42aa3d094543.png)
 
 ## Ejecutar en Ambiente Local
 
